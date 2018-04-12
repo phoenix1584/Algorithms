@@ -92,7 +92,7 @@ float CloseCalculator(std::vector<Point>& x_sorted_points,int start_point,int en
     Point mid_point = x_sorted_points[mid];
 
     float dl = CloseCalculator(x_sorted_points,start_point,start_point + mid -1);
-    float dr = CloseCalculator(x_sorted_points,start_point + mid ,end_point);
+    float dr = CloseCalculator(x_sorted_points,mid ,end_point);
     float d = std::min(dl,dr);
     std::vector<Point> strip;
     for(auto i = start_point ; i < (end_point - start_point - 1) ; ++i){
