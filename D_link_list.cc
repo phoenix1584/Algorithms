@@ -36,7 +36,6 @@ class LinkedList{
                 {}
         };
 
-        int m_total_nodes;
         Node* m_head = nullptr;
         Node* m_tail = nullptr;
         
@@ -49,31 +48,24 @@ class LinkedList{
             }else{
                delete to_be_deleted;
             }
-            --m_total_nodes;
         }
 
     public:
 
         LinkedList()
-           :m_total_nodes(0)
         {}
 
         void AddNode(int data){
-            if(0 == m_total_nodes){
+            if(nullptr == m_head){
                 m_head = new Node(data); 
                 m_tail = m_head;
             }else{
                 m_tail->m_next = new Node(data);
                 m_tail = m_tail->m_next;
             }
-            ++m_total_nodes;
         }
 
         void DeleteNode(int node_index){
-            if(node_index > m_total_nodes){
-                std::cout << "Index out of range.\n";
-                return;
-            }
             Node* itr = m_head;
             for(auto i = 0 ; i < node_index-1 ; ++i){
                 itr = itr->m_next;
@@ -82,17 +74,42 @@ class LinkedList{
                 DeleteNode(itr);
             }
         }
+      
+        // The Linus Method. Works but has memory leak ! 
+        void DeleteNodeByValue(int to_remove){
+            Node **pp = &m_head; /* pointer to a pointer */
+            Node *entry = m_head;
+            while (entry) {
+                if (entry->m_data == to_remove){
+                    *pp = entry->m_next;
+                }
+
+                pp = &entry->m_next;
+                entry = entry->m_next;
+            }
+        }
         
         void PrintList() const{
-            if(m_total_nodes){ 
-                std::cout << "Total Node count : " << m_total_nodes << "\n";
+            if(m_head){ 
+                std::cout << "Nodes : ";
                 Node * itr = m_head;
                 while(itr){
-                    std::cout << itr->m_data << "\n";
+                    std::cout << itr->m_data << ",";
                     itr = itr->m_next;
                 }
+                std::cout << "\n";
             }else{
                 std::cout << "List is empty.\n";
+            }
+        }
+
+        ~LinkedList(){
+            Node * curr = m_head;
+            Node * next = nullptr;
+            while(curr){
+                next = curr->m_next;
+                delete(curr);
+                curr = next;
             }
         }
 };
@@ -108,7 +125,8 @@ int main(){
         obj_ll.AddNode(x);
     }
     obj_ll.PrintList();
-    obj_ll.DeleteNode(2);
-    std::cout << "List post deletion at location 2.\n";
+    obj_ll.DeleteNodeByValue(4);
+    std::cout << "List post deletion.\n";
     obj_ll.PrintList();
+    return 0;
 }
