@@ -26,23 +26,34 @@ auto helper_tbd = [](const char * str){std::cout << str << " To be implemented..
 
 class Node{
     public:
-        int m_value;
-        Node* m_left;
-        Node* m_right;
+        int m_value = -1;
+        Node* m_left = nullptr;
+        Node* m_right = nullptr;
+
+        Node() = delete;
+        explicit Node(const int val)
+            :m_value(val)
+        {}
 
         friend std::ostream& operator<<(std::ostream& os,const Node& n){
             os << n.m_value ;
             return os;
         }
+        ~Node() = default;
 };
 
 class BinarySearchTree{
     private:
-        Node * root = nullptr;
+        Node * m_root = nullptr;
         int m_total_nodes = 0;
+        Node * InsertNode(Node * node , int value);
+        void IOTImpl(Node * node);
+        void PreOTImpl(Node * node);
+        void PostOTImpl(Node * node);
+        void DeleteTree(Node * node);
     public:
         BinarySearchTree() = delete;
-        explicit BinarySearchTree(const int n)
+        explicit BinarySearchTree(int n)
             :m_total_nodes(n)
         {}
         
@@ -53,15 +64,104 @@ class BinarySearchTree{
         void InorderTraversal();
         void PreorderTraversal();
         void PostorderTraversal();
+        bool Search(const int value);
+        ~BinarySearchTree();
 };
         
-void BinarySearchTree::AddNode(int value){ helper_tbd(__func__); };
-void BinarySearchTree::DeleteNode(int value){ helper_tbd(__func__); };
-void BinarySearchTree::BFS(){ helper_tbd(__func__); };
-void BinarySearchTree::DFS(){ helper_tbd(__func__); };
-void BinarySearchTree::InorderTraversal(){ helper_tbd(__func__); };
-void BinarySearchTree::PreorderTraversal(){ helper_tbd(__func__); };
-void BinarySearchTree::PostorderTraversal(){ helper_tbd(__func__); };
+Node * BinarySearchTree::InsertNode(Node * node , int value){
+        if(nullptr == node){
+            ++m_total_nodes;
+            return (new Node(value));
+        }
+        if(value >= node->m_value){
+            node->m_right = InsertNode(node->m_right,value);
+        }else{
+            node->m_left = InsertNode(node->m_left,value);
+        }
+        return node;
+}
+        
+void BinarySearchTree::AddNode(int value){ 
+    // Empty tree insert root else add based on BST property.
+    if ( nullptr == m_root ){
+        m_root = new Node(value); 
+        ++m_total_nodes;
+    }else{
+        InsertNode(m_root,value);
+    }
+}
+
+void BinarySearchTree::DeleteNode(int value){ 
+    helper_tbd(__func__); 
+}
+
+void BinarySearchTree::BFS(){ 
+    helper_tbd(__func__); 
+}
+
+void BinarySearchTree::DFS(){ 
+    helper_tbd(__func__); 
+}
+
+void BinarySearchTree::IOTImpl(Node * node){
+    if(node){
+        if (node->m_left) { IOTImpl(node->m_left); }
+        std::cout << node->m_value << ",";
+        if (node->m_right) { IOTImpl(node->m_right); }
+    }
+}
+
+void BinarySearchTree::InorderTraversal(){ 
+    std::cout << __func__ << " : "; 
+    IOTImpl(m_root);
+    std::cout << "\n"; 
+}
+
+void BinarySearchTree::PreOTImpl(Node * node){
+    if(node){
+        std::cout << node->m_value << ",";
+        if (node->m_left) { IOTImpl(node->m_left); }
+        if (node->m_right) { IOTImpl(node->m_right); }
+    }
+}
+
+void BinarySearchTree::PreorderTraversal(){ 
+    std::cout << __func__ << " : "; 
+    PreOTImpl(m_root);
+    std::cout << "\n"; 
+}
+
+void BinarySearchTree::PostOTImpl(Node * node){
+    if(node){
+        if (node->m_left) { IOTImpl(node->m_left); }
+        if (node->m_right) { IOTImpl(node->m_right); }
+        std::cout << node->m_value << ",";
+    }
+}
+
+void BinarySearchTree::PostorderTraversal(){ 
+    std::cout << __func__ << " : "; 
+    PostOTImpl(m_root);
+    std::cout << "\n"; 
+}
+
+bool BinarySearchTree::Search(const int value){ 
+    helper_tbd(__func__);
+    return false;
+}
+
+void BinarySearchTree::DeleteTree(Node * node){
+    if(node){
+        if (node->m_left) { DeleteTree(node->m_left); }
+        if (node->m_right) { DeleteTree(node->m_right); }
+        delete node;
+    }
+}
+
+BinarySearchTree::~BinarySearchTree(){
+    DeleteTree(m_root);
+}
+
 
 int main(){
     std::cout << __TIME__  << " : Program accepts first line as total number of entires, followed by entires.\n";
@@ -73,5 +173,7 @@ int main(){
         std::cin >> x;
         obj_bst.AddNode(x);
     }
-
+    obj_bst.InorderTraversal();
+    obj_bst.PreorderTraversal();
+    obj_bst.PostorderTraversal();
 }
