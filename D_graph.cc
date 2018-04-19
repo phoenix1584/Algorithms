@@ -31,6 +31,7 @@ class Graph{
     private:
         std::vector<std::vector<int>> m_graph_data;
     public:
+        friend bool BFSImpl(int u,Graph& graph);
         Graph() = delete;
         explicit Graph(int n){
             m_graph_data = std::vector<std::vector<int>>(n+1);
@@ -53,7 +54,7 @@ class Graph{
             std::cout << "\n";
         }
 
-        bool AreConnected(int u,int v) const{
+        bool EdgeConnectivity(int u,int v) const{
             if ( u > m_graph_data.size()){
                 std::cout << "Node 1 not part of graph.\n";
                 return false;
@@ -61,7 +62,16 @@ class Graph{
             return( m_graph_data[u].end() != std::find(m_graph_data[u].begin(),m_graph_data[u].end(),v));
         }
 
+        void BreadthFirstSearch(){
+            BFSImpl(1,*this);   
+        }
 };
+
+bool BFSImpl(int u,Graph& graph){
+    std::cout << graph.m_graph_data.size() << "\n";
+    return false;
+}
+
 
 int main(){
     std::cout << __TIME__  << " : Program accepts first line as number of nodes, followed by comma separated edges.\n";
@@ -74,9 +84,7 @@ int main(){
         obj_graph.AddEdge(u,v);
     }
     obj_graph.PrintGraph();
-    std::cout << "Please input 2 nodes to be checked for direct connectivity\n";
-    std::cin >> u >> v;
-    std::cout << (obj_graph.AreConnected(u,v) ? "Connected\n" : "Disconnected\n");
+    obj_graph.BreadthFirstSearch();
     return 0;
 }
 
