@@ -20,7 +20,8 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include<iostream>
+#include <iostream>
+#include <queue>
 
 auto helper_tbd = [](const char * str){std::cout << str << " To be implemented....\n";};
 
@@ -59,8 +60,7 @@ class BinarySearchTree{
         
         void AddNode(int value);
         void DeleteNode(int value);
-        void BFS();
-        void DFS();
+        void LevelOrderTraversal();
         void InorderTraversal();
         void PreorderTraversal();
         void PostorderTraversal();
@@ -95,12 +95,33 @@ void BinarySearchTree::DeleteNode(int value){
     helper_tbd(__func__); 
 }
 
-void BinarySearchTree::BFS(){ 
-    helper_tbd(__func__); 
-}
+void BinarySearchTree::LevelOrderTraversal(){ 
+    std::cout << __func__ << " : \n"; 
+    if(m_root){
+        std::queue<Node *> q;
+        q.push(m_root);
 
-void BinarySearchTree::DFS(){ 
-    helper_tbd(__func__); 
+        while(1){
+            auto node_count = q.size();
+            if(0 == node_count)
+                break; 
+
+            while(node_count){
+                Node * tmp = q.front();
+                std::cout << tmp->m_value << " ";
+                q.pop(); 
+                if(tmp->m_left){
+                    q.push(tmp->m_left);
+                }
+                if(tmp->m_right){
+                    q.push(tmp->m_right);
+                }
+                --node_count;
+            }
+            std::cout << "\n";
+        }
+        std::cout << "\n";
+    }
 }
 
 void BinarySearchTree::IOTImpl(Node * node){
@@ -176,4 +197,5 @@ int main(){
     obj_bst.InorderTraversal();
     obj_bst.PreorderTraversal();
     obj_bst.PostorderTraversal();
+    obj_bst.LevelOrderTraversal();
 }
