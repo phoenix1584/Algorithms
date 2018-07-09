@@ -27,6 +27,7 @@
 #include <algorithm>
 #include <cmath>
 #include <vector>
+#include <float.h>
 
 #define DEBUG 0
 
@@ -75,7 +76,7 @@ auto Dist(const Point& p_src, const Point& p_dst ) {
    return std::sqrt(std::pow(p_src.m_x - p_dst.m_x , 2) + std::pow(p_src.m_y - p_dst.m_y , 2)); 
 }
 
-float StripClosest(const std::vector<Point>& strip, float d){
+float StripClosest(const std::vector<Point> strip, float d){
     auto min =d;
     for (int i = 0; i < strip.size() ; ++i)
         for (int j = i+1; j < strip.size() && (strip[j].m_y - strip[i].m_y) < min; ++j){
@@ -86,7 +87,19 @@ float StripClosest(const std::vector<Point>& strip, float d){
     return min;
 }
 
+float BruteForce(std::vector<Point>& P){
+    float min = FLT_MAX;
+    for (int i = 0; i < P.size(); ++i)
+        for (int j = i+1; j < P.size(); ++j)
+            if (Dist(P[i], P[j]) < min)
+                min = Dist(P[i], P[j]);
+    return min;
+
+}
+
 float CloseCalculator(std::vector<Point>& x_sorted_points,int start_point,int end_point){
+    if ( x_sorted_points.size() <= 3)
+        return BruteForce(x_sorted_points);
     // Find the mid point of the range
     auto mid = x_sorted_points.size()/2;
     Point mid_point = x_sorted_points[mid];
@@ -104,25 +117,12 @@ float CloseCalculator(std::vector<Point>& x_sorted_points,int start_point,int en
 }
 
 
-auto Closest(std::vector<Point>& points){
+auto Closest(std::vector<Point> points){
     std::sort(points.begin(),points.end(),Sort_X);
     return CloseCalculator(points,0,points.size() - 1);
 }
 
 int main(){
-#if DEBUG
-    Point p1(10,10);
-    decltype (p1) p2(11,11);
-    std::cout << ((Sort_X(p1,p2)) ? "p1" : "p2") << " is greater \n";
-    std::cout << "Distance between p1 and p2 is : " << Dist(p1,p2) << "\n";
-#endif
-    
     std::vector<Point> P = {{2, 3}, {12, 30}, {40, 50}, {5, 1}, {12, 10}, {3, 4}};
-#if DEBUG
-    for (const auto& x : P){
-        x.PrintPoint();
-    }
-#endif
     std::cout << "The closest distance is : " << Closest(P) << "\n";
-       
 }
