@@ -87,10 +87,10 @@ float StripClosest(const std::vector<Point> strip, float d){
     return min;
 }
 
-float BruteForce(std::vector<Point>& P){
+float BruteForce(std::vector<Point>& P,int size){
     float min = FLT_MAX;
-    for (int i = 0; i < P.size(); ++i)
-        for (int j = i+1; j < P.size(); ++j)
+    for (int i = 0; i < size ; ++i)
+        for (int j = i+1; j < size; ++j)
             if (Dist(P[i], P[j]) < min)
                 min = Dist(P[i], P[j]);
     return min;
@@ -98,17 +98,17 @@ float BruteForce(std::vector<Point>& P){
 }
 
 float CloseCalculator(std::vector<Point>& x_sorted_points,int start_point,int end_point){
-    if ( x_sorted_points.size() <= 3)
-        return BruteForce(x_sorted_points);
+    auto range_size = end_point - start_point;
+    if ( range_size <= 3)
+        return BruteForce(x_sorted_points,range_size);
     // Find the mid point of the range
     auto mid = x_sorted_points.size()/2;
     Point mid_point = x_sorted_points[mid];
-
-    float dl = CloseCalculator(x_sorted_points,start_point,start_point + mid -1);
-    float dr = CloseCalculator(x_sorted_points,mid ,end_point);
+    float dl = CloseCalculator(x_sorted_points,start_point,mid);
+    float dr = CloseCalculator(x_sorted_points,start_point + mid ,end_point);
     float d = std::min(dl,dr);
     std::vector<Point> strip;
-    for(auto i = start_point ; i < (end_point - start_point - 1) ; ++i){
+    for(auto i = start_point ; i <= (end_point - start_point ) ; ++i){
         if(std::abs(x_sorted_points[i].m_x - mid_point.m_x) < d)
             strip.push_back(Point(x_sorted_points[i].m_x,x_sorted_points[i].m_y));
     }
@@ -117,7 +117,7 @@ float CloseCalculator(std::vector<Point>& x_sorted_points,int start_point,int en
 }
 
 
-auto Closest(std::vector<Point> points){
+auto Closest(std::vector<Point>& points){
     std::sort(points.begin(),points.end(),Sort_X);
     return CloseCalculator(points,0,points.size() - 1);
 }
