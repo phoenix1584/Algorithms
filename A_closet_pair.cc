@@ -78,8 +78,8 @@ auto Dist(const Point& p_src, const Point& p_dst ) {
 
 float StripClosest(const std::vector<Point> strip, float d){
     auto min =d;
-    for (int i = 0; i < strip.size() ; ++i)
-        for (int j = i+1; j < strip.size() && (strip[j].m_y - strip[i].m_y) < min; ++j){
+    for (unsigned int i = 0; i < strip.size() ; ++i)
+        for (unsigned int j = i+1; j < strip.size() && (strip[j].m_y - strip[i].m_y) < min; ++j){
             auto&& tmp_dist = Dist(strip[i],strip[j]);
             if ( tmp_dist < min)
                 min = tmp_dist;
