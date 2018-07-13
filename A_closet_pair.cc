@@ -29,8 +29,6 @@
 #include <vector>
 #include <cfloat>
 
-#define DEBUG 0
-
 // Class to hold information about the coordinates of a point.
 // Using templates to allow generalization to non integer datatypes.
 // Caution reagarding arithmatic operations is necessary in case of non integral data types.
