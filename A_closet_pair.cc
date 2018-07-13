@@ -27,7 +27,7 @@
 #include <algorithm>
 #include <cmath>
 #include <vector>
-#include <float.h>
+#include <cfloat>
 
 #define DEBUG 0
 
