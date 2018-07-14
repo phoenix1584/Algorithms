@@ -49,10 +49,33 @@ class Data{
         }
 };
 
+// Range class that simplifies the range passing and 
+// coule be extended to perform boundary condition checks
+class IndexRange{
+    public:
+        const unsigned int m_lower_bound;
+        const unsigned int m_upper_bound;
+        const unsigned int m_size = m_upper_bound - m_lower_bound;
+        IndexRange(const auto lb, const auto ub)
+            : m_lower_bound(lb)
+              ,m_upper_bound(ub)
+    {}
+        friend std::ostream& operator<<(std::ostream& os, const IndexRange& r){
+            os << "[ lbound : " << r.m_lower_bound << ",ubound : " << r.m_upper_bound << "] => size : " << r.m_size ;  
+            return os;
+        }
+
+};
+
 auto pf = [](){ std::cout << "-------------------\n"; };
+
+void RangeTester(IndexRange r){
+    std::cout << r << "\n";
+}
 
 void RecFunc(std::vector<Data>& data, int start_index, int size){
     auto itr = data.begin() + start_index;
+    RangeTester(IndexRange(start_index,start_index+size));
     if(size < 2){
         itr->Multiply(3);
         return;
@@ -75,7 +98,9 @@ int main(){
 
     int N,f1,f2;
     std::string input;
+    std::cout << "Enter the total number of pairs.\n";
     std::cin >> N;
+    std::cout << "Enter the pairs (space separated numbers.\n";
     for(auto i = 0 ; i < N ; ++i){
         std::cin >> f1 >> f2;
         data_collection.emplace_back(f1,f2);
