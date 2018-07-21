@@ -22,37 +22,44 @@
 
 // From a list of tuples (app,API,version) , find the apps using older versions of APIs
 
+
 #include <iostream>
 #include <map>
 #include <vector>
 #include <sstream>
 #include <algorithm>
 #include <string>
+#include <set>
 
 int main(){
+#if __cplusplus>=201103L
     std::string app,api,version,line;
-    std::map<std::string,std::map<int,std::vector<std::string>>> api_index;
+    std::map<std::string,std::map<int,std::vector<std::string>>> api_index; // API NAME -> Version -> Apps 
 
     while(std::getline(std::cin,line)){
         std::istringstream ss(line);
         std::getline(ss,app,',');
         std::getline(ss,api,',');
         std::getline(ss,version,',');
-        int ver_int = std::stoi(std::string(version.begin()+1,version.end()),nullptr);
+        version.erase(remove_if(version.begin(), version.end(), isspace), version.end()); // removing spaces.
+        int ver_int = std::stoi(std::string(version.begin()+1,version.end()),nullptr); // removing the "v" to extract version as number.
         api_index[api][ver_int].emplace_back(app);
     }
-
+    std::set<std::string> old_api_user_apps;
     for(const auto& x : api_index){
         const auto old_version_count = x.second.size() - 1; 
         if(0 < old_version_count){
-            auto itr = x.second.begin(); 
-            for(unsigned int i = 0 ; i < old_version_count ; ++i, ++itr){
-                std::cout << x.first << " : v" <<itr->first << "\n";
-                for(const auto& z : itr->second){
-                    std::cout << "\t" << z << "\n";
-                }
+            for(const auto& z : x.second.begin()->second){
+                old_api_user_apps.insert(z);
             }
         }
     }
-    
+
+    for(const auto& a : old_api_user_apps){
+        std::cout << a << "\n";
+    }
+#else
+    std::cout << "Please use c++11 for compilation\n";
+#endif
+    return 0;
 }
