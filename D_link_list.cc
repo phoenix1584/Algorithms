@@ -125,8 +125,10 @@ int main(){
         obj_ll.AddNode(x);
     }
     obj_ll.PrintList();
-    obj_ll.DeleteNodeByValue(4);
-    std::cout << "List post deletion.\n";
+    std::cout << "Please enter a value to be deleted.\n";
+    std::cin >> x;
+    obj_ll.DeleteNode(x);
+    std::cout << "List post deletion of "<< x << ".\n";
     obj_ll.PrintList();
     return 0;
 }
