@@ -24,6 +24,9 @@
 // The list presrves the access sequence and the hash provide the constant time data look-up
 // TODO : Implement as templates and check if user defined classes could be
 // handled as well
+// Links elaborate how it could be done but needs more complex changes for current implementations
+// conidering the already templatized value parameter. A battle for some other day !
+// https://stackoverflow.com/questions/17016175/c-unordered-map-using-a-custom-class-type-as-the-key
 
 #include <iostream>
 #include <list>
