@@ -25,7 +25,7 @@
 #include <iostream>
 #include <algorithm>
 
-    template<class Iter>
+template<class Iter>
 void merge_sort(Iter first, Iter last)
 {
     if (last - first > 1) {
