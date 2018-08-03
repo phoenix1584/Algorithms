@@ -38,7 +38,7 @@ void BusiestInterval(std::vector<int>& start, std::vector<int>& finish){
     int max_count = INT_MIN;
     auto curr = 0;
     auto index = 0;
-    for(unsigned int i = 0 ;i <= max_interval ; i++){
+    for(int i = 0 ;i <= max_interval ; i++){
         curr += aux[i];
         if(max_count < curr){
             max_count = curr;

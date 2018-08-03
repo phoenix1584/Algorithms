@@ -52,6 +52,7 @@ class BinarySearchTree{
         void PreOTImpl(Node * node);
         void PostOTImpl(Node * node);
         void DeleteTree(Node * node);
+        int KMinSearch(Node * root, unsigned int k,unsigned int n);
     public:
         BinarySearchTree() = delete;
         explicit BinarySearchTree(int n)
@@ -65,12 +66,13 @@ class BinarySearchTree{
         void PreorderTraversal();
         void PostorderTraversal();
         bool Search(const int value);
+        void Kmin(int k);
         ~BinarySearchTree();
 };
         
 Node * BinarySearchTree::InsertNode(Node * node , int value){
         if(nullptr == node){
-            ++m_total_nodes;
+            //++m_total_nodes;
             return (new Node(value));
         }
         if(value >= node->m_value){
@@ -85,7 +87,7 @@ void BinarySearchTree::AddNode(int value){
     // Empty tree insert root else add based on BST property.
     if ( nullptr == m_root ){
         m_root = new Node(value); 
-        ++m_total_nodes;
+        //++m_total_nodes;
     }else{
         InsertNode(m_root,value);
     }
@@ -179,6 +181,22 @@ void BinarySearchTree::DeleteTree(Node * node){
     }
 }
 
+// #FIXME and move to a separate file if needed.
+int BinarySearchTree::KMinSearch(Node * root, unsigned int k,unsigned int n){
+    std::cout << k << "," << n << "\n";
+    if(nullptr == root)
+        return -1;
+    if( k < n/2)
+        KMinSearch(root->m_left,k,n/2 - 1 );
+    if( k > n/2)
+        KMinSearch(root->m_right,k,n/2 + 1 );
+    return root->m_value;
+}
+        
+void BinarySearchTree::Kmin(int k){
+    std::cout << KMinSearch(m_root,k,m_total_nodes) << "\n";
+}
+
 BinarySearchTree::~BinarySearchTree(){
     DeleteTree(m_root);
 }
@@ -198,4 +216,5 @@ int main(){
     obj_bst.PreorderTraversal();
     obj_bst.PostorderTraversal();
     obj_bst.LevelOrderTraversal();
+    obj_bst.Kmin(3);
 }

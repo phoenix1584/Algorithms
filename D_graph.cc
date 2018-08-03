@@ -54,7 +54,7 @@ class Graph{
             std::cout << "\n";
         }
 
-        bool EdgeConnectivity(int u,int v) const{
+        bool EdgeConnectivity(unsigned int u,unsigned int v) const{
             if ( u > m_graph_data.size()){
                 std::cout << "Node 1 not part of graph.\n";
                 return false;
@@ -77,7 +77,7 @@ int main(){
     std::cout << __TIME__  << " : Program accepts first line as number of nodes, followed by comma separated edges.\n";
     int n ; // Total number of entires
     std::cin >> n;
-    int u,v;
+    unsigned int u,v;
     Graph obj_graph(n);
     for(auto i = 0 ; i < n - 1 ; ++i){
         std::cin >> u >> v;;
