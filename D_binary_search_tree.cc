@@ -22,6 +22,8 @@
 
 #include <iostream>
 #include <queue>
+#include <vector>
+#include <algorithm>
 
 auto helper_tbd = [](const char * str){std::cout << str << " To be implemented....\n";};
 
@@ -52,7 +54,7 @@ class BinarySearchTree{
         void PreOTImpl(Node * node);
         void PostOTImpl(Node * node);
         void DeleteTree(Node * node);
-        int KMinSearch(Node * root, unsigned int k,unsigned int n);
+        void KMinSearch(Node * root, unsigned int k,unsigned int n);
     public:
         BinarySearchTree() = delete;
         explicit BinarySearchTree(int n)
@@ -182,19 +184,35 @@ void BinarySearchTree::DeleteTree(Node * node){
 }
 
 // #FIXME and move to a separate file if needed.
-int BinarySearchTree::KMinSearch(Node * root, unsigned int k,unsigned int n){
-    std::cout << k << "," << n << "\n";
-    if(nullptr == root)
-        return -1;
-    if( k < n/2)
-        KMinSearch(root->m_left,k,n/2 - 1 );
-    if( k > n/2)
-        KMinSearch(root->m_right,k,n/2 + 1 );
-    return root->m_value;
+void BinarySearchTree::KMinSearch(Node * root, unsigned int k,unsigned int n){
+    // std::cout << k << "," << n << "\n";
+    if(nullptr == root || n < 1 || k < 1)
+        return;
+    if( n == 3 ){
+        if (k == 1) { std::cout << "Found it : " << root->m_left->m_value << "\n"; return; }
+        if (k == 3) { std::cout << "Found it : " << root->m_right->m_value << "\n"; return; }
+    }
+    if (k == ((n-1)/2 + 1)){
+        std::cout << "Found it : " << root->m_value << "\n";
+        return;
+    }
+    if( k < (n-1)/2){
+        // std::cout << "left " << root->m_left->m_value << "\n";
+        KMinSearch(root->m_left,k,(n-1)/2);
+    }
+    if( k > ((n-1)/2 + 1)){
+        // std::cout << root->m_right->m_value << " right\n";
+        KMinSearch(root->m_right,(k - ((n-1)/2 + 1)),(n-1)/2);
+    }
 }
         
 void BinarySearchTree::Kmin(int k){
-    std::cout << KMinSearch(m_root,k,m_total_nodes) << "\n";
+    if ( k < 1 || k > m_total_nodes){
+        std::cout << "Incorrect value of k !\n";
+        return;
+    }
+    std::cout << k << "th min value finder.\n";  
+    KMinSearch(m_root,k,m_total_nodes);
 }
 
 BinarySearchTree::~BinarySearchTree(){
@@ -216,5 +234,19 @@ int main(){
     obj_bst.PreorderTraversal();
     obj_bst.PostorderTraversal();
     obj_bst.LevelOrderTraversal();
-    obj_bst.Kmin(3);
+
+    std::cout << "STUB for kmin logarithmic complexity.\n";
+    //std::vector<int> test_data = {7,5,9,8,10,6,4};
+    std::vector<int> test_data = {8,4,12,2,6,10,14,1,3,5,7,9,11,13,15};
+    std::for_each(test_data.begin(),test_data.end(),[](int& x){ x = x*x;});
+    BinarySearchTree obj_bst_full_and_complete(test_data.size());
+    for(const auto& x : test_data){
+        obj_bst_full_and_complete.AddNode(x);
+    }
+    obj_bst_full_and_complete.LevelOrderTraversal();
+    obj_bst_full_and_complete.Kmin(5);
+    obj_bst_full_and_complete.Kmin(1);
+    obj_bst_full_and_complete.Kmin(15);
+    obj_bst_full_and_complete.Kmin(8);
+    obj_bst_full_and_complete.Kmin(10);
 }
