@@ -48,9 +48,21 @@ class fibonacci_template<1>{
         static constexpr unsigned int m_value = 1;
 };
 
+int64_t Power2(int64_t& base, int power){
+    if( 0 == power)
+        return 1;
+    if(1 == power)
+        return base;
+    base = (base << 1);
+    return Power2(base,power-1);
+}
+
 int main(){
     std::cout << "Runtime   : " << fibonacci_generator(32) << "\n";
     std::cout << "Constexpr : " << fibonacci_compile_time(32) << "\n";
     std::cout << "Template  : " << fibonacci_template<32>::m_value << "\n";
+
+    int64_t base = 2;
+    std::cout << " Power2 (2^32)   : " << Power2(base,32) << "\n";
     return 0;
 }
