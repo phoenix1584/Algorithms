@@ -17,4 +17,4 @@ $(TARGETS): %: %.cc
 	    $(LINK.cc) -o $@.out $< 
 
 clean:
-	$(RM) $(TARGETS) *.o *.out
+	$(RM) *.out *.o
