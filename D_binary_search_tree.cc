@@ -24,6 +24,7 @@
 #include <queue>
 #include <vector>
 #include <algorithm>
+#include <ctime>
 
 auto helper_tbd = [](const char * str){std::cout << str << " To be implemented....\n";};
 
@@ -221,6 +222,7 @@ BinarySearchTree::~BinarySearchTree(){
 
 
 int main(){
+    /*
     std::cout << __TIME__  << " : Program accepts first line as total number of entires, followed by entires.\n";
     int n ; // Total number of entires
     std::cin >> n;
@@ -230,6 +232,16 @@ int main(){
         std::cin >> x;
         obj_bst.AddNode(x);
     }
+	*/
+    std::cout << __TIME__  << " : Program accepts total number of Nodes in the tree as input.\n";
+    int n ; // Total number of entires
+    std::cin >> n;
+	srand(time(0));
+    BinarySearchTree obj_bst(n);
+    for(auto i = 0 ; i < n ; ++i){
+        obj_bst.AddNode(rand()%100);
+    }
+
     obj_bst.InorderTraversal();
     obj_bst.PreorderTraversal();
     obj_bst.PostorderTraversal();
